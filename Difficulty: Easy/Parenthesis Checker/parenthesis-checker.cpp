@@ -7,29 +7,13 @@ using namespace std;
 
 class Solution {
   public:
-    bool isParenthesisBalanced(string& s) {
-        // code here
-        if (s.length() % 2 != 0) return false;
-        
+    bool isBalanced(string& s) {
         stack<char> st;
-        
-        for (int i = 0; i < s.length(); i++) {
-            if (s[i] == '(' || s[i] == '[' || s[i] == '{') {
-                st.push(s[i]);
-            } else {
-                if (st.empty()) return false;
-                
-                char top = st.top();
-                if ((s[i] == ')' && top == '(') ||
-                    (s[i] == ']' && top == '[') ||
-                    (s[i] == '}' && top == '{')) {
-                    st.pop();
-                } else {
-                    return false;
-                }
-            }
+        for (char c : s) {
+            if (c == '(' || c == '{' || c == '[') st.push(c);
+            else if (st.empty() || abs(st.top() - c) > 2) return false;
+            else st.pop();
         }
-        
         return st.empty();
     }
 };
@@ -43,7 +27,7 @@ int main() {
     while (t--) {
         cin >> a;
         Solution obj;
-        if (obj.isParenthesisBalanced(a))
+        if (obj.isBalanced(a))
             cout << "true" << endl;
         else
             cout << "false" << endl;
